@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+   const { ipcRenderer } = require('electron');
+   document.querySelectorAll('.column a').forEach((element) => {
+       element.addEventListener('click', () => {
+           let message;
+           switch(element.id) {
+               case 'youtube':
+                  message = 'https://music.youtube.com/';
+                  break;
+               case 'apple':
+                  message = 'https://music.apple.com/us/browse';
+                  break;
+               case 'soundcloud':
+                  message = 'https://soundcloud.com/';
+                  break;
+               case 'spotify':
+                  message = 'https://open.spotify.com/';
+                  break;
+           }
+           ipcRenderer.send('change-variable', `${message}`);
+           console.log(`Clicked on ${message}`);
+       });
+   });
+});
+            </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Pick a music app.</h1>
+            <div class="row">
+            <div class="column">
+                <a id="youtube" href=""><img src="../src/youtubemusic.png" width="100px" height="100px"></a>
+            </div>
+            <div class="column">
+               <a id="apple" href=""><img src="../src/applemusic.png" width="100px" height="100px"></a>
+            </div>
+            <div class="column">
+            <a id="soundcloud" href=""><img src="../src/soundcloud.png" width="100px" height="100px"></a>
+            </div>
+            <div class="column">
+            <a id="spotify" href=""><img src="../src/spotify.png" width="100px" height="100px"></a>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>
