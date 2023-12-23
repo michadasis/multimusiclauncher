@@ -1,0 +1,15 @@
+{
+  "name": "multimusic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Michh",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^28.1.0",
+    "electron-context-menu": "^3.6.1"
+  }
+}
