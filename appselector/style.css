@@ -1,0 +1,29 @@
+body {
+    font-family: 'Urbanist', sans-serif;
+    background-color: #01060f;
+}
+h1 {
+    color: #333333;
+    font-size: 3.6rem;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+.container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    text-align: center;
+    }
+.column {
+    float: left;
+    width: 22.7%;
+    padding: 5px;
+  }
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
