@@ -1,6 +1,6 @@
 {
   "name": "multimusiclauncher",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "All popular music platforms in one.",
   "main": "index.js",
   "scripts": {
@@ -20,22 +20,11 @@
     "electron-context-menu": "^3.6.1"
   },
   "build": {
-    "appId": "com.michadasis.multimusiclauncher",
-     "productName": "MultimusicLauncher",
-      "directories": {
-      "output": "dist"
- },
- "files": [
-   "dist/linux-unpacked/**/*"
- ],
-    "win": {
-    "icon": "appselector/src/mmllogo.ico"
-  },
+   "win": {
+      "icon": "./src/mmllogomonotone.ico"
+   },
     "linux": {
-      "target": ["deb"],
-      "icon": "appselector/src/mmllogo.png",
-      "category": "AudioVideo",
-      "synopsis": "All popular music platforms in one."
+      "icon": "./src/mmllogomonotone.png"
     }
    }
 }

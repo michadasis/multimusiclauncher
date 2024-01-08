@@ -1,23 +1,29 @@
-const {app, BrowserWindow, electron, globalShortcut, ipcMain} = require('electron');
+const {app, BrowserWindow, electron, ipcMain, globalShortcut} = require('electron');
 const contextMenu = require('electron-context-menu');
 let win;
 
 contextMenu({
 	showCopyLink: true,
-    showInspectElement: false
+    showInspectElement: true
 });
 
 function createWindow() {
+    globalShortcut.register('Shift+f5', function() {
+		win.reload()
+	})
+	globalShortcut.register('Shift+Control+R', function() {
+		win.reload()
+	})
     win = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
 			showCopyLink: true,
-            //showInspectElement: false
+            showInspectElement: false
 		},
     width: 1280,
     height: 720,
-//    icon: './src/soundcloud.png', //Change to custom designed icon
+    icon: './src/mmllogomonotone.png',
 	backgroundColor: '#000000',
     title: 'MultiMusic Launcher'
 });
@@ -48,24 +54,24 @@ app.on('activate', function(){
     }
 })
 
-ipcMain.on('change-url', (event, message) => {
-    // Close the current window
+ipcMain.on('change-variable', (event, message) => {
+    console.log(message)
     if (win !== null) {
         win.close();
     }
     let icon;
     switch(message) {
        case 'https://music.youtube.com/':
-           icon = "./appselector/src/youtubemusic.png";
+           icon = "./src/youtubemusic.png";
            break;
        case 'https://music.apple.com/us/browse':
-           icon = "./appselector/src/applemusic.png";
+           icon = "./src/applemusic.png";
            break;
        case 'https://soundcloud.com/':
-           icon = "./appselector/src/soundcloud.png";
+           icon = "./src/soundcloud.png";
            break;
        case 'https://open.spotify.com/':
-           icon = "./appselector/src/spotify.png";
+           icon = "./src/spotify.png";
            break;
        default:
            console.log("No matching URL found");
@@ -84,5 +90,6 @@ ipcMain.on('change-url', (event, message) => {
         icon: icon,
         title: "MultiMusic Launcher"
     });
+    win.removeMenu()
     win.loadURL(message);
  });
