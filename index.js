@@ -1,4 +1,4 @@
-const {app, BrowserWindow, electron, ipcMain, globalShortcut} = require('electron');
+const {app, BrowserWindow, electron, ipcMain, globalShortcut, Menu} = require('electron');
 const contextMenu = require('electron-context-menu');
 let win;
 
@@ -8,12 +8,6 @@ contextMenu({
 });
 
 function createWindow() {
-    globalShortcut.register('Shift+f5', function() {
-		win.reload()
-	})
-	globalShortcut.register('Shift+Control+R', function() {
-		win.reload()
-	})
     win = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
@@ -72,11 +66,12 @@ ipcMain.on('change-variable', (event, message) => {
            break;
        case 'https://open.spotify.com/':
            icon = "./src/spotify.png";
+           //add logic to open spotify app.
            break;
        default:
            console.log("No matching URL found");
     }
-    win = new BrowserWindow({
+    let win2 = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -90,6 +85,49 @@ ipcMain.on('change-variable', (event, message) => {
         icon: icon,
         title: "MultiMusic Launcher"
     });
-    win.removeMenu()
-    win.loadURL(message);
+    globalShortcut.register('Shift+f5', function() {
+        try {
+            win2.reload();
+        } catch (error) {
+            console.error(error.message);
+        }
+     });
+	globalShortcut.register('Shift+Control+R', function() {
+		try {
+            win2.reload();
+        } catch (error) {
+            console.error(error.message);
+        }
+	})
+    globalShortcut.register('Shift+f6', function() {
+        try {
+    win2.webContents.goBack();
+        } catch (error) {
+            console.error(error.message)
+        }
+    })
+const template = [
+    {label: 'File',
+          label: 'Home',
+          click: () => {
+            let newWin = new BrowserWindow({
+                webPreferences: {
+                    nodeIntegration: true,
+                    contextIsolation: false,
+                    showCopyLink: true,
+                    showInspectElement: false
+                },
+                width: 1280, 
+                height: 720,
+                icon: './src/mmllogomonotone.png',
+	            backgroundColor: '#000000',
+                title: 'MultiMusic Launcher'
+            });
+            newWin.removeMenu()
+            newWin.loadFile('appselector/index.html')
+            win2.close();
+          }}];
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
+    win2.loadURL(message);
  });
