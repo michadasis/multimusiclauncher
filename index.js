@@ -99,7 +99,7 @@ ipcMain.on('change-variable', (event, message) => {
             console.error(error.message);
         }
 	})
-    globalShortcut.register('Shift+f6', function() {
+    globalShortcut.register('Control+B', function() {
         try {
     win2.webContents.goBack();
         } catch (error) {
