@@ -110,7 +110,7 @@ const template = [
     {label: 'File',
           label: 'Home',
           click: () => {
-            let newWin = new BrowserWindow({
+            win = new BrowserWindow({
                 webPreferences: {
                     nodeIntegration: true,
                     contextIsolation: false,
@@ -123,8 +123,8 @@ const template = [
 	            backgroundColor: '#000000',
                 title: 'MultiMusic Launcher'
             });
-            newWin.removeMenu()
-            newWin.loadFile('appselector/index.html')
+            win.removeMenu()
+            win.loadFile('appselector/index.html')
             win2.close();
           }}];
     const menu = Menu.buildFromTemplate(template);
