@@ -107,26 +107,54 @@ ipcMain.on('change-variable', (event, message) => {
         }
     })
 const template = [
-    {label: 'File',
-          label: 'Home',
-          click: () => {
-            win = new BrowserWindow({
-                webPreferences: {
-                    nodeIntegration: true,
-                    contextIsolation: false,
-                    showCopyLink: true,
-                    showInspectElement: false
-                },
-                width: 1280, 
-                height: 720,
-                icon: './src/mmllogomonotone.png',
-	            backgroundColor: '#000000',
-                title: 'MultiMusic Launcher'
-            });
-            win.removeMenu()
-            win.loadFile('appselector/index.html')
-            win2.close();
-          }}];
+    {
+        label: 'Go back',
+        click: () => {
+        try {
+            win2.webContents.goBack();
+        } catch (error) {
+            console.error(error.message)
+        }
+    }},
+    {
+        label: 'Go forward',
+        click: () => {
+        try {
+            win2.webContents.goForward();
+        } catch (error) {
+            console.error(error.message)
+        }
+    }},
+    {
+        label: 'Reload',
+        click: () => {
+        try {
+            win2.reload();
+        } catch (error) {
+            console.error(error.message);
+        }
+    }},
+    {
+        label: 'Home',
+        click: () => {
+          win = new BrowserWindow({
+              webPreferences: {
+                  nodeIntegration: true,
+                  contextIsolation: false,
+                  showCopyLink: true,
+                  showInspectElement: false
+              },
+              width: 1280, 
+              height: 720,
+              icon: './src/mmllogomonotone.png',
+              backgroundColor: '#000000',
+              title: 'MultiMusic Launcher'
+          });
+          win.removeMenu()
+          win.loadFile('appselector/index.html')
+          win2.close();
+  }},
+        ];
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
     win2.loadURL(message);
