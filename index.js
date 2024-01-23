@@ -108,7 +108,7 @@ ipcMain.on('change-variable', (event, message) => {
     })
 const template = [
     {
-        label: 'Go back',
+        label: '⮜',
         click: () => {
         try {
             win2.webContents.goBack();
@@ -117,7 +117,7 @@ const template = [
         }
     }},
     {
-        label: 'Go forward',
+        label: '⮞',
         click: () => {
         try {
             win2.webContents.goForward();
@@ -126,7 +126,7 @@ const template = [
         }
     }},
     {
-        label: 'Reload',
+        label: '↻',
         click: () => {
         try {
             win2.reload();
@@ -135,7 +135,7 @@ const template = [
         }
     }},
     {
-        label: 'Home',
+        label: '⌂',
         click: () => {
           win = new BrowserWindow({
               webPreferences: {
