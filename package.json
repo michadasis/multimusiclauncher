@@ -1,6 +1,6 @@
 {
   "name": "multimusiclauncher",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "All popular music platforms in one.",
   "main": "index.js",
   "scripts": {
