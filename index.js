@@ -1,5 +1,9 @@
 const {app, BrowserWindow, electron, ipcMain, globalShortcut, Menu} = require('electron');
 const contextMenu = require('electron-context-menu');
+const { exec } = require('child_process');
+const username = process.env.USERNAME;
+const spotifyPath = `C:\\Users\\${username}\\AppData\\Roaming\\Spotify\\Spotify.exe`;
+
 let win;
 
 contextMenu({
@@ -55,6 +59,7 @@ ipcMain.on('change-variable', (event, message) => {
     }
     let icon;
     switch(message) {
+        //keep logic, will be useful for docking.
        case 'https://music.youtube.com/':
            icon = "./src/youtubemusic.png";
            break;
@@ -66,11 +71,20 @@ ipcMain.on('change-variable', (event, message) => {
            break;
        case 'https://open.spotify.com/':
            icon = "./src/spotify.png";
-           //add logic to open spotify app.
            break;
        default:
            console.log("No matching URL found");
     }
+       if (message === 'https://open.spotify.com/') {
+        exec(`start "" "${spotifyPath}"`, (error, stdout, stderr) => {
+            if (error) {
+              console.error(`Error executing command: ${error}`);
+              return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.error(`stderr: ${stderr}`);
+          });
+       }else {
     let win2 = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
@@ -109,6 +123,7 @@ ipcMain.on('change-variable', (event, message) => {
 const template = [
     {
         label: '⮜',
+        toolTip: 'Go back.',
         click: () => {
         try {
             win2.webContents.goBack();
@@ -118,6 +133,7 @@ const template = [
     }},
     {
         label: '⮞',
+        toolTip: 'Go forward.',
         click: () => {
         try {
             win2.webContents.goForward();
@@ -127,6 +143,7 @@ const template = [
     }},
     {
         label: '↻',
+        toolTip: 'Reload page.',
         click: () => {
         try {
             win2.reload();
@@ -136,6 +153,7 @@ const template = [
     }},
     {
         label: '⌂',
+        toolTip: 'Go to homepage.',
         click: () => {
           win = new BrowserWindow({
               webPreferences: {
@@ -154,8 +172,29 @@ const template = [
           win.loadFile('appselector/index.html')
           win2.close();
   }},
+  {
+    label: '🗀',
+    toolTip: 'Go to homepage without closing current window.',
+    click: () => {
+      win = new BrowserWindow({
+          webPreferences: {
+              nodeIntegration: true,
+              contextIsolation: false,
+              showCopyLink: true,
+              showInspectElement: false
+          },
+          width: 1280, 
+          height: 720,
+          icon: './src/mmllogomonotone.png',
+          backgroundColor: '#000000',
+          title: 'MultiMusic Launcher'
+      });
+      win.removeMenu()
+      win.loadFile('appselector/index.html')
+}},
         ];
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
     win2.loadURL(message);
+    }
  });
