@@ -1,8 +1,9 @@
 const {app, BrowserWindow, electron, ipcMain, globalShortcut, Menu} = require('electron');
 const contextMenu = require('electron-context-menu');
 const { exec } = require('child_process');
-const username = process.env.USERNAME;
-const spotifyPath = `C:\\Users\\${username}\\AppData\\Roaming\\Spotify\\Spotify.exe`;
+const client = require('discord-rich-presence')('1205671600175714364');
+const fs = require('fs');
+const spotifyPath = `C:\\Users\\${process.env.USERNAME}\\AppData\\Roaming\\Spotify\\Spotify.exe`;
 
 let win;
 
@@ -54,37 +55,50 @@ app.on('activate', function(){
 
 ipcMain.on('change-variable', (event, message) => {
     console.log(message)
-    if (win !== null) {
-        win.close();
-    }
     let icon;
+    let picon;
+    let name;
     switch(message) {
         //keep logic, will be useful for docking.
        case 'https://music.youtube.com/':
            icon = "./src/youtubemusic.png";
+           pcion = "youtubemusicmonotone";
+           name = "YouTube Music"
            break;
        case 'https://music.apple.com/us/browse':
            icon = "./src/applemusic.png";
+           pcion = "applemusicmonotone";
+           name = "Apple Music"
            break;
        case 'https://soundcloud.com/':
            icon = "./src/soundcloud.png";
-           break;
-       case 'https://open.spotify.com/':
-           icon = "./src/spotify.png";
+           pcion = "soundcloudmonotone";
+           name = "SoundCloud"
            break;
        default:
            console.log("No matching URL found");
     }
        if (message === 'https://open.spotify.com/') {
-        exec(`start "" "${spotifyPath}"`, (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Error executing command: ${error}`);
-              return;
-            }
-            console.log(`stdout: ${stdout}`);
-            console.error(`stderr: ${stderr}`);
-          });
+        if (fs.existsSync(spotifyPath)) {
+            exec(`start "" "${spotifyPath}"`, (error, stdout, stderr) => {
+                if (win !== null) {
+                    win.close();
+                }
+                if (error) {
+                  console.error(`Error executing command: ${error}`);
+                  return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.error(`stderr: ${stderr}`);
+              });
+            console.log("Directory exists.");
+          } else {
+            return
+          }
        }else {
+        if (win !== null) {
+            win.close();
+        }
     let win2 = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
@@ -99,6 +113,14 @@ ipcMain.on('change-variable', (event, message) => {
         icon: icon,
         title: "MultiMusic Launcher"
     });
+//    client.updatePresence({
+//        state: `On platform: ${name}`,
+//        details: 'Listening to music',
+//        startTimestamp: Date.now(),           //WIP
+//        largeImageKey: 'mmllogo',
+//        smallImageKey: picon,
+//        instance: true,
+//      });
     globalShortcut.register('Shift+f5', function() {
         try {
             win2.reload();

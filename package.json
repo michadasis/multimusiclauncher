@@ -1,6 +1,6 @@
 {
   "name": "multimusiclauncher",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "All popular music platforms in one.",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": {
     "name": "michadasis",
     "email": "michhbusiness@gmail.com"
-},
+  },
   "license": "ISC",
   "devDependencies": {
     "electron": "^28.1.0",
@@ -17,14 +17,15 @@
     "electron-builder-squirrel-windows": "^24.10.0"
   },
   "dependencies": {
+    "discord-rich-presence": "^0.0.8",
     "electron-context-menu": "^3.6.1"
   },
   "build": {
-   "win": {
+    "win": {
       "icon": "./src/mmllogomonotone.ico"
-   },
+    },
     "linux": {
       "icon": "./src/mmllogomonotone.png"
     }
-   }
+  }
 }
