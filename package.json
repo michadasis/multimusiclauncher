@@ -10,7 +10,7 @@
     "name": "michadasis",
     "email": "michhbusiness@gmail.com"
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "electron": "^28.1.0",
     "electron-builder-squirrel-windows": "^24.10.0"
