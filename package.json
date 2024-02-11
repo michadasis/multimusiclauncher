@@ -13,7 +13,6 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^28.1.0",
-    "electron-builder": "^24.9.1",
     "electron-builder-squirrel-windows": "^24.10.0"
   },
   "dependencies": {
@@ -25,7 +24,9 @@
       "icon": "./src/mmllogomonotone.ico"
     },
     "linux": {
-      "icon": "./src/mmllogomonotone.png"
+      "icon": "./src/mmllogomonotone.png",
+      "category": "AudioVideo",
+      "synopsis": "All popular music platforms in one."
     }
   }
 }
