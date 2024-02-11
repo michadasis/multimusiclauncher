@@ -4,7 +4,7 @@ Multimusic Launcher is a powerful tool designed to simplify the process of launc
 
 ## Features
 
-- Cross-platform compatibility (Windows, Linux(soon))
+- Cross-platform compatibility (Windows, Linux)
 - Support for multiple music streaming services (Spotify, Apple Music, Soundcloud and YouTube Music)
 - Easy configuration and setup
 
