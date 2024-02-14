@@ -3,7 +3,7 @@ const contextMenu = require('electron-context-menu');
 const { exec } = require('child_process');
 const client = require('discord-rich-presence')('1205671600175714364');
 const fs = require('fs');
-const spotifyPath = `C:\\Users\\${process.env.USERNAME}\\AppData\\Roaming\\Spotify\\Spotify.exe`;
+const os = require('os');
 
 let win;
 
@@ -62,39 +62,62 @@ ipcMain.on('change-variable', (event, message) => {
         //keep logic, will be useful for docking.
        case 'https://music.youtube.com/':
            icon = "./src/youtubemusic.png";
-           pcion = "youtubemusicmonotone";
+           pcion = 'youtubemusic';
            name = "YouTube Music"
            break;
        case 'https://music.apple.com/us/browse':
            icon = "./src/applemusic.png";
-           pcion = "applemusicmonotone";
+           pcion = 'applemusic';
            name = "Apple Music"
            break;
        case 'https://soundcloud.com/':
            icon = "./src/soundcloud.png";
-           pcion = "soundcloudmonotone";
-           name = "SoundCloud"
+           pcion = 'soundcloud';
+           name = "Soundcloud"
            break;
        default:
            console.log("No matching URL found");
     }
        if (message === 'https://open.spotify.com/') {
-        if (fs.existsSync(spotifyPath)) {
-            exec(`start "" "${spotifyPath}"`, (error, stdout, stderr) => {
-                if (win !== null) {
-                    win.close();
+        if (win !== null) {
+            win.close();
+        }
+        let spotifyPath;
+        switch (os.type()) {
+            case 'Windows_NT':
+              spotifyPath = `C:\\Users\\${process.env.USERNAME}\\AppData\\Roaming\\Spotify\\Spotify.exe`;
+              break;
+            case 'Linux':
+              if (fs.existsSync('/etc/arch-release')) {
+                // Arch Linux
+                spotifyPath = '/usr/bin/spotify-launcher';
+                if (!fs.existsSync(spotifyPath)) {
+                  spotifyPath = '/snap/spotify/current/bin/spotify';
+                  if (!fs.existsSync(spotifyPath)) {
+                    spotifyPath = '/opt/spotify/spotify';
+                  }
                 }
-                if (error) {
-                  console.error(`Error executing command: ${error}`);
-                  return;
+              } else if (fs.existsSync('/etc/debian_version')) {
+                // Debian
+                spotifyPath = '/usr/bin/spotify';
+                if (!fs.existsSync(spotifyPath)) {
+                  spotifyPath = '/snap/bin/spotify';
                 }
-                console.log(`stdout: ${stdout}`);
-                console.error(`stderr: ${stderr}`);
-              });
-            console.log("Directory exists.");
-          } else {
-            return
+              }
+              break;
+            default:
+              console.error('Unsupported OS');
+              return;
           }
+          const command = os.type() === 'Windows_NT' ? `start "" "${spotifyPath}"` : spotifyPath;
+          exec(command, (error, stdout, stderr) => {
+            if (error) {
+              console.error(`Error executing command: ${error}`);
+              return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.error(`stderr: ${stderr}`);
+          });
        }else {
         if (win !== null) {
             win.close();
@@ -118,7 +141,9 @@ ipcMain.on('change-variable', (event, message) => {
 //        details: 'Listening to music',
 //        startTimestamp: Date.now(),           //WIP
 //        largeImageKey: 'mmllogo',
+//        largeImageText: 'Multimusic Launcher',
 //        smallImageKey: picon,
+//        smallImageText: name,
 //        instance: true,
 //      });
     globalShortcut.register('Shift+f5', function() {
@@ -144,7 +169,7 @@ ipcMain.on('change-variable', (event, message) => {
     })
 const template = [
     {
-        label: '⮜',
+        label: '↼',
         toolTip: 'Go back.',
         click: () => {
         try {
@@ -154,7 +179,7 @@ const template = [
         }
     }},
     {
-        label: '⮞',
+        label: '⇀',
         toolTip: 'Go forward.',
         click: () => {
         try {
@@ -195,7 +220,7 @@ const template = [
           win2.close();
   }},
   {
-    label: '🗀',
+    label: '🗁',
     toolTip: 'Go to homepage without closing current window.',
     click: () => {
       win = new BrowserWindow({

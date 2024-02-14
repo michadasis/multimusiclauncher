@@ -3,3 +3,5 @@ node_modules
 dist
 
 dev
+build/icons/256x256.ico
+build/icons/256x256.png
